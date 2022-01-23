@@ -9,7 +9,10 @@
     </div>
 
     <div class="p-8 flex items-start bg-light-grey rounded-md shadow-lg ">
-      <form class="flex flex-col gap-y-5 w-full">
+      <form
+        @submit.prevent="createWorkout"
+        class="flex flex-col gap-y-5 w-full"
+      >
         <h1 class="text-2xl text-at-light-green">Record Workout</h1>
 
         <!-- Workout Name -->
@@ -31,6 +34,7 @@
             >Workout Type</label
           >
           <select
+            @click="workoutChange"
             id="workout-type"
             v-model="workoutType"
             class="
@@ -96,11 +100,13 @@
             </div>
 
             <img
+              @click="deleteWorkout(exercise.id)"
               src="@/assets/images/trash-light-green.png"
               class="h-4 w-auto absolute -left-5 cursor-pointer "
             />
           </div>
           <button
+            @click="addExercise"
             type="button"
             class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-green duration-200 border-solid border-2 border-transparent hover:border-at-light-green hover:bg-white hover:text-at-light-green "
           >
@@ -163,11 +169,13 @@
             </div>
 
             <img
+              @click="deleteWorkout(exercise.id)"
               src="@/assets/images/trash-light-green.png"
               class="h-4 w-auto absolute -left-5 cursor-pointer "
             />
           </div>
           <button
+            @click="addExercise"
             type="button"
             class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-green duration-200 border-solid border-2 border-transparent hover:border-at-light-green hover:bg-white hover:text-at-light-green "
           >
@@ -188,6 +196,8 @@
 
 <script>
 import { ref } from "vue";
+import { uid } from "uid";
+import { supabase } from "../supabase/init";
 
 export default {
   name: "create",
@@ -195,19 +205,89 @@ export default {
     // Create data
     const workoutName = ref("");
     const workoutType = ref("select-workout");
-    const exercises = ref([1]);
+    const exercises = ref([]);
     const statusMsg = ref(null);
     const errorMsg = ref(null);
 
     // Add exercise
+    const addExercise = () => {
+      if (workoutType.value === "strength") {
+        exercises.value.push({
+          id: uid(),
+          exercise: "",
+          sets: "",
+          reps: "",
+          weight: "",
+        });
+        return;
+      }
+      if (workoutType.value === "cardio") {
+        exercises.value.push({
+          id: uid(),
+          cardioType: "",
+          distance: "",
+          duration: "",
+          pace: "",
+        });
+      }
+    };
 
     // Delete exercise
+    const deleteWorkout = (id) => {
+      if (exercises.value.length > 1) {
+        exercises.value = exercises.value.filter((e) => e.id !== id);
+        return;
+      }
+      errorMsg.value = "Error:Can't remove,need to at least have one exercise";
+      setInterval(() => {
+        errorMsg.value = null;
+      }, 5000);
+    };
 
     // Listens for chaging of workout type input
+    const workoutChange = () => {
+      exercises.value = [];
+      addExercise();
+    };
 
     // Create workout
+    const createWorkout = async () => {
+      try {
+        const { error } = await supabase.from("workouts").insert([
+          {
+            workoutName: workoutName.value,
+            workoutType: workoutType.value,
+            exercises: exercises.value,
+          },
+        ]);
+        if (error) throw error;
+        statusMsg.value = "Succes: Workout Created!";
+        workoutName.value = null;
+        workoutType.value = "select-workout";
+        exercises.value = [];
 
-    return { workoutType, workoutName, exercises, errorMsg, statusMsg };
+        setInterval(() => {
+          statusMsg.value = null;
+        }, 5000);
+      } catch (error) {
+        errorMsg.value = `Error: ${error.message}`;
+        setInterval(() => {
+          errorMsg.value = null;
+        }, 5000);
+      }
+    };
+
+    return {
+      createWorkout,
+      workoutType,
+      workoutName,
+      exercises,
+      errorMsg,
+      statusMsg,
+      addExercise,
+      workoutChange,
+      deleteWorkout,
+    };
   },
 };
 </script>
