@@ -196,8 +196,7 @@
 
 <script>
 import { ref } from "vue";
-import { uid } from "uid";
-import { supabase } from "../supabase/init";
+import createExercises from "../api/create-exercise";
 
 export default {
   name: "create",
@@ -209,72 +208,18 @@ export default {
     const statusMsg = ref(null);
     const errorMsg = ref(null);
 
-    // Add exercise
-    const addExercise = () => {
-      if (workoutType.value === "strength") {
-        exercises.value.push({
-          id: uid(),
-          exercise: "",
-          sets: "",
-          reps: "",
-          weight: "",
-        });
-        return;
-      }
-      if (workoutType.value === "cardio") {
-        exercises.value.push({
-          id: uid(),
-          cardioType: "",
-          distance: "",
-          duration: "",
-          pace: "",
-        });
-      }
-    };
-
-    // Delete exercise
-    const deleteWorkout = (id) => {
-      if (exercises.value.length > 1) {
-        exercises.value = exercises.value.filter((e) => e.id !== id);
-        return;
-      }
-      errorMsg.value = "Error:Can't remove,need to at least have one exercise";
-      setInterval(() => {
-        errorMsg.value = null;
-      }, 5000);
-    };
+    const { addExercise, createWorkout, deleteWorkout } = createExercises(
+      workoutType,
+      exercises,
+      workoutName,
+      statusMsg,
+      errorMsg
+    );
 
     // Listens for chaging of workout type input
     const workoutChange = () => {
       exercises.value = [];
       addExercise();
-    };
-
-    // Create workout
-    const createWorkout = async () => {
-      try {
-        const { error } = await supabase.from("workouts").insert([
-          {
-            workoutName: workoutName.value,
-            workoutType: workoutType.value,
-            exercises: exercises.value,
-          },
-        ]);
-        if (error) throw error;
-        statusMsg.value = "Succes: Workout Created!";
-        workoutName.value = null;
-        workoutType.value = "select-workout";
-        exercises.value = [];
-
-        setInterval(() => {
-          statusMsg.value = null;
-        }, 5000);
-      } catch (error) {
-        errorMsg.value = `Error: ${error.message}`;
-        setInterval(() => {
-          errorMsg.value = null;
-        }, 5000);
-      }
     };
 
     return {

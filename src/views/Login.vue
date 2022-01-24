@@ -51,9 +51,10 @@
 </template>
 
 <script>
+// import { supabase } from "../supabase/init";
+// import { useRouter } from "vue-router";
 import { ref } from "vue";
-import { supabase } from "../supabase/init";
-import { useRouter } from "vue-router";
+import loginAndLogout from "../api/login-logout";
 
 export default {
   name: "login",
@@ -61,26 +62,9 @@ export default {
     // Create data / vars
     const email = ref(null);
     const password = ref(null);
-    const errorMsg = ref(null);
-
-    const router = useRouter();
 
     // Login function
-    const login = async () => {
-      try {
-        let { error } = await supabase.auth.signIn({
-          email: email.value,
-          password: password.value,
-        });
-        if (error) throw error;
-        router.push({ name: "Home" });
-      } catch (error) {
-        errorMsg.value = `Error:${error.message}`;
-        setInterval(() => {
-          errorMsg.value = null;
-        }, 5000);
-      }
-    };
+    const { login, errorMsg } = loginAndLogout(email, password);
 
     return { email, password, errorMsg, login };
   },

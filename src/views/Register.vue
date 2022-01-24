@@ -65,8 +65,7 @@
 
 <script>
 import { ref } from "vue";
-import { supabase } from "../supabase/init";
-import { useRouter } from "vue-router";
+import userRegistration from "../api/register";
 
 export default {
   name: "register",
@@ -77,31 +76,13 @@ export default {
     const confirmPassword = ref("");
     const errorMsg = ref(null);
 
-    const router = useRouter();
-
     // Register function
-    const register = async () => {
-      if (password.value === confirmPassword.value) {
-        try {
-          let { error } = await supabase.auth.signUp({
-            email: email.value,
-            password: password.value,
-          });
-          if (error) throw error;
-          router.push({ name: "Login" });
-        } catch (error) {
-          errorMsg.value = error.message;
-          setInterval(() => {
-            errorMsg.value = null;
-          }, 5000);
-        }
-        return;
-      }
-      errorMsg.value = "Error:Passords do not match";
-      setInterval(() => {
-        errorMsg.value = null;
-      }, 5000);
-    };
+    const { register } = userRegistration(
+      email,
+      password,
+      confirmPassword,
+      errorMsg
+    );
 
     return { email, password, confirmPassword, errorMsg, register };
   },

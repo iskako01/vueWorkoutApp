@@ -51,8 +51,8 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import { supabase } from "../supabase/init";
+import { ref, onMounted } from "vue";
+import getDataFromDatabase from "../api/get-data";
 
 export default {
   name: "Home",
@@ -62,21 +62,12 @@ export default {
     const dataLoader = ref(false);
 
     // Get data
-    const getDataDB = async () => {
-      try {
-        const { data: workouts, error } = await supabase
-          .from("workouts")
-          .select("*");
-        if (error) throw error;
-        dataDB.value = workouts;
-        dataLoader.value = true;
-      } catch (error) {
-        console.warn(error.message);
-      }
-    };
+    const { getDataDB } = getDataFromDatabase(dataDB, dataLoader);
 
     // Run data function
-    getDataDB();
+    onMounted(async () => {
+      await getDataDB();
+    });
     return { dataDB, dataLoader };
   },
 };
