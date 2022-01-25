@@ -27,6 +27,7 @@
             v-model="workoutName"
             class=" p-2 text-gray-500 focus:outline-none"
           />
+         
         </div>
         <!-- Workout Type -->
         <div class="flex flex-col">
