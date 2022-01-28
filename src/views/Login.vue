@@ -6,6 +6,7 @@
 
     <form
       @submit.prevent="login"
+      @keydown.enter="login"
       class="p-8 flex flex-col bg-light-grey rounded-md shadow-lg"
     >
       <h1 class="text-3xl text-at-light-green mb-4">Login</h1>
@@ -51,8 +52,6 @@
 </template>
 
 <script>
-// import { supabase } from "../supabase/init";
-// import { useRouter } from "vue-router";
 import { ref } from "vue";
 import loginAndLogout from "../api/login-logout";
 

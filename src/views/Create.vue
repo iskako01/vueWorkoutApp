@@ -11,6 +11,7 @@
     <div class="p-8 flex items-start bg-light-grey rounded-md shadow-lg ">
       <form
         @submit.prevent="createWorkout"
+        @keydown.enter="createWorkout"
         class="flex flex-col gap-y-5 w-full"
       >
         <h1 class="text-2xl text-at-light-green">Record Workout</h1>
@@ -27,7 +28,6 @@
             v-model="workoutName"
             class=" p-2 text-gray-500 focus:outline-none"
           />
-         
         </div>
         <!-- Workout Type -->
         <div class="flex flex-col">
