@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
-import { supabase } from "../supabase/init";
+import { auth } from "../firebase/firebase";
 
 const routes = [
   {
@@ -62,7 +62,8 @@ router.beforeEach((to, from, next) => {
 });
 // Route guard for auth routes
 router.beforeEach((to, from, next) => {
-  const user = supabase.auth.user();
+  const user = auth.currentUser;
+  console.log(user);
   if (to.matched.some((res) => res.meta.auth)) {
     if (user) {
       next();

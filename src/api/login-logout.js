@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { supabase } from "../supabase/init";
+import { auth } from "../firebase/firebase";
 import { useRouter } from "vue-router";
 
 export default function loginAndLogout(email, password) {
@@ -8,12 +8,11 @@ export default function loginAndLogout(email, password) {
   //Login
   const login = async () => {
     try {
-      let { error } = await supabase.auth.signIn({
-        email: email.value,
-        password: password.value,
+      auth.signInWithEmailAndPassword(email.value, password.value).then(() => {
+        const user = auth.currentUser;
+        console.log(user.uid);
+        router.push({ name: "Home" });
       });
-      if (error) throw error;
-      router.push({ name: "Home" });
     } catch (error) {
       errorMsg.value = `Error:${error.message}`;
       setInterval(() => {
@@ -24,7 +23,8 @@ export default function loginAndLogout(email, password) {
 
   //Logout
   const logout = async () => {
-    await supabase.auth.signOut();
+    await auth.signOut();
+    window.location.reload();
     router.push({ name: "Home" });
   };
 

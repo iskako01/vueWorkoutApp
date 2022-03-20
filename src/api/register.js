@@ -1,4 +1,4 @@
-import { supabase } from "../supabase/init";
+import { db, auth } from "../firebase/firebase";
 import { useRouter } from "vue-router";
 
 export default function userRegistration(
@@ -11,11 +11,16 @@ export default function userRegistration(
   const register = async () => {
     if (password.value === confirmPassword.value) {
       try {
-        let { error } = await supabase.auth.signUp({
-          email: email.value,
-          password: password.value,
+        console.log(email.value, password.value);
+        const createUser = auth.createUserWithEmailAndPassword(
+          email.value,
+          password.value
+        );
+        const result = await createUser;
+        const dataBase = db.collection("users").doc(result.user.uid);
+        await dataBase.set({
+          login: email.value,
         });
-        if (error) throw error;
         router.push({ name: "Login" });
       } catch (error) {
         errorMsg.value = error.message;

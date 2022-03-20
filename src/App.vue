@@ -8,7 +8,7 @@
 <script>
 import { ref } from "vue";
 import Navigation from "./components/Navigation.vue";
-import { supabase } from "./supabase/init";
+import { auth } from "././firebase/firebase";
 import store from "./store/index";
 
 export default {
@@ -18,18 +18,18 @@ export default {
   setup() {
     // Create data / vars
     const appReady = ref(null);
-    const user = supabase.auth.user();
+    const user = auth.currentUser;
     // If user does not exist, need to make app ready
     if (!user) {
       appReady.value = true;
     }
-
+    console.log(user);
     // Runs when there is a auth state change
     // if user is logged in, this will fire
-    supabase.auth.onAuthStateChange((_, session) => {
-      store.methods.setUser(session);
-      appReady.value = true;
-    });
+    // supabase.auth.onAuthStateChange((_, session) => {
+    store.methods.setUser(user);
+    //   appReady.value = true;
+    // });
 
     return { appReady };
   },

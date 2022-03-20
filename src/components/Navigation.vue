@@ -30,7 +30,13 @@ import loginAndLogout from "../api/login-logout";
 
 export default {
   setup() {
-    const user = computed(() => store.state.user);
+    const user = computed(() => {
+      if (store.state.user === null) {
+        return false;
+      }
+      return true;
+    });
+    console.log(user);
     // Logout function
     const { logout } = loginAndLogout();
 
