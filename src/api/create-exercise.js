@@ -1,4 +1,5 @@
-import { supabase } from "../supabase/init";
+// import { supabase } from "../supabase/init";
+import { db } from "../firebase/firebase";
 import { useRouter, useRoute } from "vue-router";
 import { uid } from "uid";
 import { ref } from "vue";
@@ -18,8 +19,9 @@ export default function createExercises(
 
   const currentId = route.params.id;
   const addExercise = () => {
-    if (workoutType.value === "strength") {
-      exercises.value.push({
+    console.log(data.value[0].data);
+    if (data.value[0].data.workoutType === "strength") {
+      data.value[0].data.exercises.push({
         id: uid(),
         exercise: "",
         sets: "",
@@ -28,8 +30,8 @@ export default function createExercises(
       });
       return;
     }
-    if (workoutType.value === "cardio") {
-      exercises.value.push({
+    if (data.value[0].data.workoutType === "cardio") {
+      data.value[0].data.exercises.push({
         id: uid(),
         cardioType: "",
         distance: "",
@@ -41,12 +43,22 @@ export default function createExercises(
   //Get data from database
   const getDataWorkout = async () => {
     try {
-      const { data: workouts, error } = await supabase
-        .from("workouts")
-        .select("*")
-        .eq("id", currentId);
-      if (error) throw error;
-      data.value = workouts[0];
+      const dataBase = await db.collection("workouts").orderBy("date", "desc");
+      const dbResult = await dataBase.get();
+      const workouts = [];
+      dbResult.forEach((doc) => {
+        if (doc.id === currentId) {
+          console.log(doc.id);
+          workouts.push({ workoutID: doc.id, data: doc.data() });
+        }
+      });
+      //   const { data: workouts, error } = await supabase
+      //     .from("workouts")
+      //     .select("*")
+      //     .eq("id", currentId);
+
+      data.value = workouts;
+      console.log(data.value);
       dataLoaded.value = true;
     } catch (error) {
       errorMsg.value = error.message;
@@ -59,14 +71,21 @@ export default function createExercises(
   //Create workout
   const createWorkout = async () => {
     try {
-      const { error } = await supabase.from("workouts").insert([
-        {
-          workoutName: workoutName.value,
-          workoutType: workoutType.value,
-          exercises: exercises.value,
-        },
-      ]);
-      if (error) throw error;
+      const dataBase = await db.collection("workouts").doc();
+      dataBase.set({
+        workoutName: workoutName.value,
+        workoutType: workoutType.value,
+        exercises: exercises.value,
+        date: Date.now(),
+      });
+      //   const { error } = await supabase.from("workouts").insert([
+      //     {
+      //       workoutName: workoutName.value,
+      //       workoutType: workoutType.value,
+      //       exercises: exercises.value,
+      //     },
+      //   ]);
+      //   if (error) throw error;
       statusMsg.value = "Succes: Workout Created!";
       workoutName.value = null;
       workoutType.value = "select-workout";
@@ -85,13 +104,15 @@ export default function createExercises(
 
   // Delete exercise
   const deleteWorkout = (id) => {
-    if (exercises.value.length > 1) {
-      exercises.value = exercises.value.filter((e) => e.id !== id);
+    if (data.value[0].data.exercises.length > 1) {
+      data.value[0].data.exercises = data.value[0].data.exercises.filter(
+        (e) => e.id !== id
+      );
       return;
     }
 
-    if (data.value.exercises.length > 1) {
-      data.value.exercises = data.value.exercises.filter(
+    if (data.value[0].data.exercises.length > 1) {
+      data.value[0].data.exercises = data.value[0].data.exercises.filter(
         (exercise) => exercise.id !== id
       );
       return;
@@ -105,11 +126,13 @@ export default function createExercises(
   //Delete workout
   const deleteWorkoutView = async () => {
     try {
-      const { error } = await supabase
-        .from("workouts")
-        .delete()
-        .eq("id", currentId);
-      if (error) throw error;
+      const getWorkout = await db.collection("workouts").doc(currentId);
+      await getWorkout.delete();
+      //   const { error } = await supabase
+      //     .from("workouts")
+      //     .delete()
+      //     .eq("id", currentId);
+      //   if (error) throw error;
       router.push({ name: "Home" });
     } catch (error) {
       errorMsg.value = `Error: ${error.message}`;
@@ -122,19 +145,23 @@ export default function createExercises(
   // Update Workout
   const update = async () => {
     try {
-      const { error } = await supabase
-        .from("workouts")
+      const dataBase = await db.collection("workouts").doc(currentId);
+      const dbRes = await dataBase.get();
+      console.log(data.value[0].data);
+      console.log(data.value);
+      console.log(dbRes);
+      await dataBase
         .update({
-          workoutName: data.value.workoutName,
-          exercises: data.value.exercises,
+          workoutName: data.value[0].data.workoutName,
+          exercises: data.value[0].data.exercises,
         })
-        .eq("id", currentId);
-      if (error) throw error;
-      edit.value = false;
-      statusMsg.value = "Success: Workout Updated!";
-      setTimeout(() => {
-        statusMsg.value = false;
-      }, 5000);
+        .then(() => {
+          edit.value = false;
+          statusMsg.value = "Success: Workout Updated!";
+          setTimeout(() => {
+            statusMsg.value = false;
+          }, 5000);
+        });
     } catch (error) {
       errorMsg.value`Error: ${error.message}`;
       setTimeout(() => {

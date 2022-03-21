@@ -15,6 +15,7 @@
 
     <div v-if="dataLoaded">
       <!-- General Workout Info -->
+      {{ data[0].data }}
       <div
         class="flex flex-col items-center p-8 rounded-md shadow-md 
       bg-light-grey relative"
@@ -45,7 +46,7 @@
         </div>
 
         <img
-          v-if="data.workoutType === 'cardio'"
+          v-if="data[0].data.workoutType === 'cardio'"
           class="h-24 w-auto"
           src="@/assets/images/running-light-green.png"
           alt=""
@@ -62,7 +63,7 @@
           class="mt-6 py-1.5 px-5 text-xs text-white bg-at-light-green
         rounded-lg shadow-md"
         >
-          {{ data.workoutType }}
+          {{ data[0].data.workoutType }}
         </span>
 
         <div class="w-full mt-6">
@@ -70,10 +71,10 @@
             v-if="edit"
             type="text"
             class="p-2 w-full text-gray-500 focus:outline-none"
-            v-model="data.workoutName"
+            v-model="data[0].data.workoutName"
           />
           <h1 v-else class="text-at-light-green text-2xl text-center">
-            {{ data.workoutName }}
+            {{ data[0].data.workoutName }}
           </h1>
         </div>
       </div>
@@ -85,12 +86,12 @@
       >
         <!-- Strength Training -->
         <div
-          v-if="data.workoutType === 'strength'"
+          v-if="data[0].data.workoutType === 'strength'"
           class="flex flex-col gap-y-4 w-full"
         >
           <div
             class="flex flex-col gap-x-6 gap-y-2 relative sm:flex-row"
-            v-for="(item, index) in data.exercises"
+            v-for="(item, index) in data[0].data.exercises"
             :key="index"
           >
             <div class="flex flex-2 flex-col md:w-1/3">
@@ -172,7 +173,7 @@
         <div v-else class="flex flex-col gap-y-4 w-full">
           <div
             class="flex flex-col gap-x-6 gap-y-2 relative sm:flex-row"
-            v-for="(item, index) in data.exercises"
+            v-for="(item, index) in data[0].data.exercises"
             :key="index"
           >
             <div class="flex flex-2 flex-col md:w-1/3">
@@ -278,7 +279,13 @@ export default {
     const errorMsg = ref(null);
     const statusMsg = ref(null);
 
-    const user = computed(() => store.state.user);
+    const user = computed(() => {
+      if (store.state.user === null) {
+        return false;
+      } else {
+        return true;
+      }
+    });
 
     // Get current Id of route
     const {

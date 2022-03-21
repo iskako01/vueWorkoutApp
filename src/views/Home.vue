@@ -1,4 +1,5 @@
 <template>
+  {{ dataLoader }}
   <div v-if="dataLoader" class="container mt-10 px-4 ">
     <!-- No Data -->
     <div v-if="dataDB.length === 0" class="flex w-full flex-col items-center">
@@ -17,20 +18,20 @@
     >
       <router-link
         class="flex flex-col items-center bg-light-grey p-8 shadow-md cursor-pointer"
-        :to="{ name: 'View-Workout', params: { id: workout.id } }"
+        :to="{ name: 'View-Workout', params: { id: workout.workoutID } }"
         v-for="(workout, index) in dataDB"
         :key="index"
       >
         <!-- Img Cardio -->
         <img
-          v-if="workout.workoutType === 'cardio'"
+          v-if="workout.data.workoutType === 'cardio'"
           src="@/assets/images/running-light-green.png"
           class="h-24 w-auto"
           alt=""
         />
         <!-- Img strength -->
         <img
-          v-if="workout.workoutType === 'strength'"
+          v-if="workout.data.workoutType === 'strength'"
           src="@/assets/images/dumbbell-light-green.png"
           class="h-24 w-auto"
           alt=""
@@ -39,11 +40,11 @@
         <p
           class="mt-6 py-1 px-3 text-xs text-white bg-at-light-green shadow-md rounded-lg"
         >
-          {{ workout.workoutType }}
+          {{ workout.data.workoutType }}
         </p>
 
         <h1 class="mt-8 mb-2 text-center text-xl text-at-light-green">
-          {{ workout.workoutName }}
+          {{ workout.data.workoutName }}
         </h1>
       </router-link>
     </div>
@@ -66,8 +67,13 @@ export default {
 
     // Run data function
     onMounted(async () => {
-      await getDataDB();
+      await getDataDB().then(() => {
+        dataDB.value.forEach((i) => {
+          console.log(i);
+        });
+      });
     });
+
     return { dataDB, dataLoader };
   },
 };
