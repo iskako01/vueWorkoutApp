@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-full font-Poppins box-border ">
+  <div class="min-h-full font-Poppins box-border">
     <Navigation></Navigation>
     <router-view />
   </div>
@@ -17,7 +17,7 @@ export default {
   },
   setup() {
     // Create data / vars
-    const appReady = ref(null);
+    const appReady = ref(false);
     const user = auth.currentUser;
     // If user does not exist, need to make app ready
     if (!user) {

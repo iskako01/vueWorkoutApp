@@ -51,29 +51,19 @@
   </div>
 </template>
 
-<script>
-import { ref, onMounted } from "vue";
+<script lang="ts">
+import { onMounted } from "vue";
 import getDataFromDatabase from "../api/get-data";
-
 export default {
   name: "Home",
   components: {},
   setup() {
-    const dataDB = ref([]);
-    const dataLoader = ref(false);
-
     // Get data
-    const { getDataDB } = getDataFromDatabase(dataDB, dataLoader);
-
+    const { getDataDB, dataDB, dataLoader } = getDataFromDatabase();
     // Run data function
     onMounted(async () => {
-      await getDataDB().then(() => {
-        dataDB.value.forEach((i) => {
-          console.log(i);
-        });
-      });
+      await getDataDB();
     });
-
     return { dataDB, dataLoader };
   },
 };

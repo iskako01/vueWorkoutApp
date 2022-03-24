@@ -17,13 +17,11 @@
       <!-- General Workout Info -->
       {{ data[0].data }}
       <div
-        class="flex flex-col items-center p-8 rounded-md shadow-md 
-      bg-light-grey relative"
+        class="flex flex-col items-center p-8 rounded-md shadow-md bg-light-grey relative"
       >
         <div v-if="user" class="flex absolute left-2 top-2 gap-x-2">
           <div
-            class="h-7 w-7 rounded-full flex justify-center items-center cursor-pointer
-        bg-at-light-green shadow-lg"
+            class="h-7 w-7 rounded-full flex justify-center items-center cursor-pointer bg-at-light-green shadow-lg"
             @click="editMode"
           >
             <img
@@ -34,8 +32,7 @@
           </div>
           <div
             @click="deleteWorkoutView"
-            class="h-7 w-7 rounded-full flex justify-center items-center cursor-pointer
-        bg-at-light-green shadow-lg"
+            class="h-7 w-7 rounded-full flex justify-center items-center cursor-pointer bg-at-light-green shadow-lg"
           >
             <img
               class="h-3.5 w-auto"
@@ -60,8 +57,7 @@
         />
 
         <span
-          class="mt-6 py-1.5 px-5 text-xs text-white bg-at-light-green
-        rounded-lg shadow-md"
+          class="mt-6 py-1.5 px-5 text-xs text-white bg-at-light-green rounded-lg shadow-md"
         >
           {{ data[0].data.workoutType }}
         </span>
@@ -81,8 +77,7 @@
 
       <!-- Exercises -->
       <div
-        class="mt-10 p-8 rounded-md flex flex-col item-center
-      bg-light-grey shadow-md"
+        class="mt-10 p-8 rounded-md flex flex-col item-center bg-light-grey shadow-md"
       >
         <!-- Strength Training -->
         <div
@@ -161,9 +156,7 @@
             v-if="edit"
             @click="addExercise"
             type="button"
-            class="py-2 px-6 rounded-sm self-start text-sm text-white
-            bg-at-light-green duration-200 border-solid border-2 border-transparent
-            hover:border-at-light-green hover:bg-white hover:text-at-light-green"
+            class="py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-green duration-200 border-solid border-2 border-transparent hover:border-at-light-green hover:bg-white hover:text-at-light-green"
           >
             Add Exercise
           </button>
@@ -244,9 +237,7 @@
             @click="addExercise"
             v-if="edit"
             type="button"
-            class="py-2 px-6 rounded-sm self-start text-sm text-white
-            bg-at-light-green duration-200 border-solid border-2 border-transparent
-            hover:border-at-light-green hover:bg-white hover:text-at-light-green"
+            class="py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-green duration-200 border-solid border-2 border-transparent hover:border-at-light-green hover:bg-white hover:text-at-light-green"
           >
             Add Exercise
           </button>
@@ -258,9 +249,7 @@
         v-if="edit"
         @click="update"
         type="button"
-        class="mt-10 py-2 px-6 rounded-sm self-start text-sm text-white
-            bg-at-light-green duration-200 border-solid border-2 border-transparent
-            hover:border-at-light-green hover:bg-white hover:text-at-light-green"
+        class="mt-10 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-green duration-200 border-solid border-2 border-transparent hover:border-at-light-green hover:bg-white hover:text-at-light-green"
       >
         Update Workout
       </button>

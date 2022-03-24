@@ -8,7 +8,7 @@
       <p class="text-red-500">{{ errorMsg }}</p>
     </div>
 
-    <div class="p-8 flex items-start bg-light-grey rounded-md shadow-lg ">
+    <div class="p-8 flex items-start bg-light-grey rounded-md shadow-lg">
       <form
         @submit.prevent="createWorkout"
         @keydown.enter="createWorkout"
@@ -26,7 +26,7 @@
             type="text"
             required
             v-model="workoutName"
-            class=" p-2 text-gray-500 focus:outline-none"
+            class="p-2 text-gray-500 focus:outline-none"
           />
         </div>
         <!-- Workout Type -->
@@ -38,8 +38,7 @@
             @click="workoutChange"
             id="workout-type"
             v-model="workoutType"
-            class="
-            p-2 text-gray-500 focus:outline-none"
+            class="p-2 text-gray-500 focus:outline-none"
           >
             <option value="select-workout">Select Workout</option>
             <option value="strength">Strength Traning</option>
@@ -62,7 +61,7 @@
               <input
                 id="exercise-name"
                 type="text"
-                class="p-2 w-full text-gray-500 focus:outline-none "
+                class="p-2 w-full text-gray-500 focus:outline-none"
                 v-model="exercise.exercise"
               />
             </div>
@@ -73,7 +72,7 @@
               <input
                 id="sets"
                 type="text"
-                class="p-2 w-full text-gray-500 focus:outline-none "
+                class="p-2 w-full text-gray-500 focus:outline-none"
                 v-model="exercise.sets"
               />
             </div>
@@ -84,7 +83,7 @@
               <input
                 id="reps"
                 type="text"
-                class="p-2 w-full text-gray-500 focus:outline-none "
+                class="p-2 w-full text-gray-500 focus:outline-none"
                 v-model="exercise.reps"
               />
             </div>
@@ -95,7 +94,7 @@
               <input
                 id="weight"
                 type="text"
-                class="p-2 w-full text-gray-500 focus:outline-none "
+                class="p-2 w-full text-gray-500 focus:outline-none"
                 v-model="exercise.weight"
               />
             </div>
@@ -103,13 +102,13 @@
             <img
               @click="deleteWorkout(exercise.id)"
               src="@/assets/images/trash-light-green.png"
-              class="h-4 w-auto absolute -left-5 cursor-pointer "
+              class="h-4 w-auto absolute -left-5 cursor-pointer"
             />
           </div>
           <button
             @click="addExercise"
             type="button"
-            class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-green duration-200 border-solid border-2 border-transparent hover:border-at-light-green hover:bg-white hover:text-at-light-green "
+            class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-green duration-200 border-solid border-2 border-transparent hover:border-at-light-green hover:bg-white hover:text-at-light-green"
           >
             Add Exercise
           </button>
@@ -121,13 +120,13 @@
             :key="index"
             class="flex flex-col gap-x-6 gap-y-2 relative md:flex-row"
           >
-            <div class="flex flex-col  flex-1">
+            <div class="flex flex-col flex-1">
               <label for="cardio-type" class="mb-1 text-sm text-at-light-green"
                 >Type</label
               >
               <select
                 id="cardio-type"
-                class="p-2 w-full text-gray-500 focus:outline-none "
+                class="p-2 w-full text-gray-500 focus:outline-none"
                 v-model="exercise.cardioType"
               >
                 <option value="#">Select Type</option>
@@ -142,7 +141,7 @@
               <input
                 id="distance"
                 type="text"
-                class="p-2 w-full text-gray-500 focus:outline-none "
+                class="p-2 w-full text-gray-500 focus:outline-none"
                 v-model="exercise.distance"
               />
             </div>
@@ -153,7 +152,7 @@
               <input
                 id="duration"
                 type="text"
-                class="p-2 w-full text-gray-500 focus:outline-none "
+                class="p-2 w-full text-gray-500 focus:outline-none"
                 v-model="exercise.duration"
               />
             </div>
@@ -164,7 +163,7 @@
               <input
                 id="pace"
                 type="text"
-                class="p-2 w-full text-gray-500 focus:outline-none "
+                class="p-2 w-full text-gray-500 focus:outline-none"
                 v-model="exercise.pace"
               />
             </div>
@@ -172,13 +171,13 @@
             <img
               @click="deleteWorkout(exercise.id)"
               src="@/assets/images/trash-light-green.png"
-              class="h-4 w-auto absolute -left-5 cursor-pointer "
+              class="h-4 w-auto absolute -left-5 cursor-pointer"
             />
           </div>
           <button
             @click="addExercise"
             type="button"
-            class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-green duration-200 border-solid border-2 border-transparent hover:border-at-light-green hover:bg-white hover:text-at-light-green "
+            class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-green duration-200 border-solid border-2 border-transparent hover:border-at-light-green hover:bg-white hover:text-at-light-green"
           >
             Add Exercise
           </button>
@@ -186,7 +185,7 @@
 
         <button
           type="submit"
-          class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-green duration-200 border-solid border-2 border-transparent hover:border-at-light-green hover:bg-white hover:text-at-light-green "
+          class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-green duration-200 border-solid border-2 border-transparent hover:border-at-light-green hover:bg-white hover:text-at-light-green"
         >
           Record Workout
         </button>
@@ -195,19 +194,19 @@
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
+<script lang="ts">
+import { ref, Ref, defineComponent } from "vue";
 import createExercises from "../api/create-exercise";
 
-export default {
+export default defineComponent({
   name: "create",
   setup() {
     // Create data
     const workoutName = ref("");
     const workoutType = ref("select-workout");
-    const exercises = ref([]);
-    const statusMsg = ref(null);
-    const errorMsg = ref(null);
+    const exercises: Ref<string | number>[] = ref([]);
+    const statusMsg = ref("");
+    const errorMsg = ref("");
 
     const { addExercise, createWorkout, deleteWorkout } = createExercises(
       workoutType,
@@ -235,5 +234,5 @@ export default {
       deleteWorkout,
     };
   },
-};
+});
 </script>
