@@ -2,10 +2,12 @@ import { db, firebase } from "../firebase/firebase";
 import { useRouter, useRoute } from "vue-router";
 import { uid } from "uid";
 import { ref, Ref } from "vue";
+import Iworkouts from "../types/workoutsData";
+import Iexercise from "../types/workoutsData";
 
 export default function createExercises(
   workoutType: Ref<string>,
-  exercises: Ref<string[] | number[]>,
+  exercises: Ref<never[]>,
   workoutName: Ref<string>,
   statusMsg: Ref<string | unknown>,
   errorMsg: Ref<string | null | unknown>,
@@ -13,8 +15,9 @@ export default function createExercises(
 ) {
   const route = useRoute();
   const router = useRouter();
-  const data = ref([]);
+  const data = ref<Iworkouts[]>([]);
   const dataLoaded = ref(false);
+  const workouts: Iworkouts[] = [];
 
   const addExercise = () => {
     if (data.value[0].data.workoutType === "strength") {
@@ -42,17 +45,13 @@ export default function createExercises(
     try {
       const dataBase = db.collection("workouts").orderBy("date", "desc");
       const dbResult = await dataBase.get();
-      const workouts: Array<object> = [];
+
       dbResult.forEach((doc) => {
         if (doc.id === currentId) {
           console.log(doc.id);
           workouts.push({ workoutID: doc.id, data: doc.data() });
         }
       });
-      //   const { data: workouts, error } = await supabase
-      //     .from("workouts")
-      //     .select("*")
-      //     .eq("id", currentId);
 
       data.value = workouts;
       console.log(data.value);
@@ -93,17 +92,17 @@ export default function createExercises(
   };
 
   // Delete exercise
-  const deleteWorkout = (id) => {
+  const deleteWorkout = (id: string) => {
     if (data.value[0].data.exercises.length > 1) {
       data.value[0].data.exercises = data.value[0].data.exercises.filter(
-        (e) => e.id !== id
+        (e: Iexercise) => e.id !== id
       );
       return;
     }
 
     if (data.value[0].data.exercises.length > 1) {
       data.value[0].data.exercises = data.value[0].data.exercises.filter(
-        (exercise) => exercise.id !== id
+        (exercise: Iexercise) => exercise.id !== id
       );
       return;
     }

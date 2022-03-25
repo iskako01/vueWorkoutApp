@@ -265,8 +265,8 @@ export default {
   name: "view-workout",
   setup() {
     // Create data / vars
-    const errorMsg = ref(null);
-    const statusMsg = ref(null);
+    const errorMsg = ref("");
+    const statusMsg = ref("");
 
     const user = computed(() => {
       if (store.state.user === null) {
@@ -291,7 +291,7 @@ export default {
     getDataWorkout();
 
     // Edit mode
-    const edit = ref(null);
+    const edit = ref(false);
     const editMode = () => {
       edit.value = !edit.value;
     };

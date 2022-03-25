@@ -15,7 +15,7 @@ export default function getDataFromDatabase() {
       });
 
       dataDB.value = workouts;
-      console.log(dataDB);
+      console.log(dataDB.value);
       dataLoader.value = true;
     } catch (error) {
       console.log(error);

@@ -30,15 +30,15 @@ const routes = [
       auth: false,
     },
   },
-//   {
-//     path: "/create",
-//     name: "Create",
-//     component: () => import("../views/Create.vue"),
-//     meta: {
-//       title: "Create",
-//       auth: true,
-//     },
-//   },
+  {
+    path: "/create",
+    name: "Create",
+    component: () => import("../views/Create.vue"),
+    meta: {
+      title: "Create",
+      auth: true,
+    },
+  },
   {
     path: "/view-workout/:id",
     name: "View-Workout",

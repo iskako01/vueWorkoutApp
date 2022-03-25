@@ -195,7 +195,7 @@
 </template>
 
 <script lang="ts">
-import { ref, Ref, defineComponent } from "vue";
+import { ref, defineComponent } from "vue";
 import createExercises from "../api/create-exercise";
 
 export default defineComponent({
@@ -204,16 +204,18 @@ export default defineComponent({
     // Create data
     const workoutName = ref("");
     const workoutType = ref("select-workout");
-    const exercises: Ref<string | number>[] = ref([]);
+    const exercises = ref([]);
     const statusMsg = ref("");
     const errorMsg = ref("");
+    const edit = ref(false);
 
     const { addExercise, createWorkout, deleteWorkout } = createExercises(
       workoutType,
       exercises,
       workoutName,
       statusMsg,
-      errorMsg
+      errorMsg,
+      edit
     );
 
     // Listens for chaging of workout type input
